@@ -23,7 +23,7 @@ import com.prolifics.youtube.model.YouTubeMedia;
 import com.prolifics.youtube.model.YouTubeVideo;
 
 @Path("/youtubeServices")
-public class YouTubeManager {
+public class YouTubeManager implements IYouTubeManager {
  
     private static final String YOUTUBE_URL = "http://gdata.youtube.com/feeds/api/videos";
     private static final String YOUTUBE_EMBEDDED_URL = "http://www.youtube.com/v/";
@@ -38,7 +38,11 @@ public class YouTubeManager {
         this.clientID = clientID;
     }
  
-     public List<YouTubeVideo> retrieveVideos(String textQuery, int maxResults, boolean filter, int timeout) throws Exception {
+     /* (non-Javadoc)
+	 * @see com.prolifics.youtube.IYouTubeManager#retrieveVideos(java.lang.String, int, boolean, int)
+	 */
+    @Override
+	public List<YouTubeVideo> retrieveVideos(String textQuery, int maxResults, boolean filter, int timeout) throws Exception {
   
         YouTubeService service = new YouTubeService(clientID);
         service.setConnectTimeout(timeout); // millis
@@ -95,7 +99,11 @@ public class YouTubeManager {
   
     }
     
-    @GET
+    /* (non-Javadoc)
+	 * @see com.prolifics.youtube.IYouTubeManager#retrieveVideosForRest(java.lang.String, int)
+	 */
+    @Override
+	@GET
 	@Path("/textquery/{textquery}")
 	@Produces(MediaType.APPLICATION_JSON)
     public List<YouTubeVideo> retrieveVideosForRest(@PathParam("textquery")String textQuery,
